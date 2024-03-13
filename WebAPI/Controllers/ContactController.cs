@@ -1,7 +1,7 @@
 using Entities;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Repositories;
+using Repositories.EFCore;
 
 namespace WebAPI.Controllers;
 
