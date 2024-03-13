@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Repositories;
 
 namespace WebAPI.Controllers;
 
@@ -7,11 +8,18 @@ namespace WebAPI.Controllers;
 [Route("api/[controller]")]
 public class ContactController : ControllerBase
 {
+    private readonly RepositoryContext _context;    //kaydı IoC ile yapılıyor
+
+    public ContactController(RepositoryContext context) 
+    {
+        _context = context;
+    }
 
     [HttpGet]
     public IActionResult GetAllContact()
     {
-        throw new NotImplementedException();
+        var contacts = _context.Contacts.ToList();
+        return Ok(contacts);
     }
 
     [HttpGet("{id:int}")]
