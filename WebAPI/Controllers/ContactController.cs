@@ -16,7 +16,7 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAllContact()
+    public IActionResult GetAllContact()//bu method şimdilik tüm verileri getiriyor.
     {
         var contacts = _context.Contacts.ToList();
         return Ok(contacts);
@@ -25,33 +25,32 @@ public class ContactController : ControllerBase
     [HttpGet("{id:int}")]
     public IActionResult GetAllContactById([FromRoute(Name = "id")] int id)
     {
-        throw new NotImplementedException();
+        var entity = _context
+            .Contacts
+            .FirstOrDefault(c => c.Id == id);
+        if (entity is null) return NotFound();
+
+        return Ok(entity);
     }
 
     [HttpPost]
     public IActionResult CreateContact([FromBody] Contact contact)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (contact is null)
+                return BadRequest();
+            _context
+                .Contacts
+                .Add(contact);
+            _context.SaveChanges();
+            return StatusCode(201, contact);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
-
-    [HttpPut("{id:int}")]
-    public IActionResult UpdateContact([FromRoute(Name = "id")] int id,
-        [FromBody] Contact contact)
-    {
-        throw new NotImplementedException();
-    }
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteBookAsync([FromRoute(Name = "id")] int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    [HttpPatch("{id:int}")]
-    public async Task<IActionResult> PatchBookAsync([FromRoute(Name = "id")] int id,
-        [FromBody] JsonPatchDocument<Contact> contact)
-    {
-        throw new NotImplementedException();
-    }
-    
 
 }
