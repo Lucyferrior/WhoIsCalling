@@ -11,7 +11,7 @@ using Repositories.EFCore;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240314053241_StartPoint")]
+    [Migration("20240314061948_StartPoint")]
     partial class StartPoint
     {
         /// <inheritdoc />
