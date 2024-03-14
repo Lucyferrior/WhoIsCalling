@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Contrats;
 using Repositories.EFCore;
+using Services.Contrats;
 
 namespace WebAPI.Controllers;
 
@@ -10,18 +11,17 @@ namespace WebAPI.Controllers;
 [Route("api/[controller]")]
 public class ContactController : ControllerBase
 {
-    private readonly IRepositoryManager _manager;    //kaydı IoC ile yapılıyor
+    private readonly IServiceManager _manager;
 
-    public ContactController(IRepositoryManager manager)
+    public ContactController(IServiceManager manager)
     {
         _manager = manager;
     }
 
-
     [HttpGet]
     public IActionResult GetAllContact()//bu method şimdilik tüm verileri getiriyor.
     {
-        var contacts = _manager.Contacts.GetAllContact(false);
+        var contacts = _manager.ContactService.GetAllContacts(false);
         return Ok(contacts);
     }
 
@@ -29,8 +29,8 @@ public class ContactController : ControllerBase
     public IActionResult GetAllContactById([FromRoute(Name = "id")] int id)
     {
         var entity = _manager
-            .Contacts
-            .GetOneContactById(id,false);
+            .ContactService
+            .GetContactById(id,false);
         if (entity is null) return NotFound();
 
         return Ok(entity);
@@ -43,11 +43,10 @@ public class ContactController : ControllerBase
         {
             if (contact is null)
                 return BadRequest();
-            _manager
-                .Contacts
+            var entity = _manager
+                .ContactService
                 .CreateOneContact(contact);
-            _manager.Save();
-            return StatusCode(201, contact);
+            return StatusCode(201, entity);
         }
         catch (Exception e)
         {
