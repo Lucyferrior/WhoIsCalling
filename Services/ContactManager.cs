@@ -7,10 +7,12 @@ namespace Services;
 public class ContactManager: IContactService
 {
     private readonly IRepositoryManager _manager;//dependency injection
+    private readonly ILoggerService _logger;
 
-    public ContactManager(IRepositoryManager manager)
+    public ContactManager(IRepositoryManager manager, ILoggerService logger)
     {
         _manager = manager;
+        _logger = logger;
     }
 
     public IEnumerable<Contact> GetAllContacts(bool trackChanges)
