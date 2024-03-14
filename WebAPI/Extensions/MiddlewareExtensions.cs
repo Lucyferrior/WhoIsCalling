@@ -1,5 +1,6 @@
 using System.Net;
 using Entities.ErrorModels;
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Services.Contrats;
 
@@ -13,18 +14,21 @@ public static class MiddlewareExtensions
         {
             appErr.Run(async context =>
             {
-                context.Response.StatusCode =
-                    (int)HttpStatusCode.InternalServerError; //hata olduğunda tüm hatalar şu anda 500 olarak dönüyor
                 context.Response.ContentType = "application/json";
 
                 var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                 if (contextFeature is not null)
                 {
+                    context.Response.StatusCode = contextFeature.Error switch //hatanın hangi exceptiona karşılık geldiğini switchleyip status codu verilir
+                    {
+                        NotFoundException => StatusCodes.Status404NotFound,
+                        _ => StatusCodes.Status500InternalServerError
+                    };
                     logger.LogError($"Something went wrong: {contextFeature.Error}");
                     await context.Response.WriteAsync(new ErrorDetails()
                     {
                         StatusCode = context.Response.StatusCode,
-                        Message = "Internal server error."
+                        Message = contextFeature.Error.Message
                     }.ToString());
                 }
             });
