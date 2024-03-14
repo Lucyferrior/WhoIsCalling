@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Repositories;
+using Repositories.Contrats;
 using Repositories.EFCore;
+using Services;
+using Services.Contrats;
 
 namespace WebAPI.Extensions;
 
@@ -10,4 +14,10 @@ public static class ServicesExtensions
         {
             options.UseNpgsql(configuration.GetConnectionString("psqlConnection"));
         });
+
+    public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+    public static void ConfigureServiceManager(this IServiceCollection services) =>
+        services.AddScoped<IServiceManager, ServiceManager>();
 }
