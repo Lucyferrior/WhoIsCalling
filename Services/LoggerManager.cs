@@ -3,7 +3,7 @@ using Services.Contrats;
 
 namespace Services;
 
-public class LoggerService:ILoggerService
+public class LoggerManager:ILoggerService
 {
     private static ILogger logger = LogManager.GetCurrentClassLogger();
     public void LogInfo(string message) => logger.Info(message);
