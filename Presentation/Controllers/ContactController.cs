@@ -37,20 +37,11 @@ public class ContactController : ControllerBase
     [HttpPost]
     public IActionResult CreateContact([FromBody] Contact contact)
     {
-        try
-        {
-            if (contact is null)
-                return BadRequest();
-            var entity = _manager
-                .ContactService
-                .CreateOneContact(contact);
-            return StatusCode(201, entity);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        if (contact is null)
+            return BadRequest();
+        var entity = _manager
+            .ContactService
+            .CreateOneContact(contact);
+        return StatusCode(201, entity);
     }
-
 }
