@@ -40,6 +40,9 @@ public class ContactController : ControllerBase
     {
         if (contactDto is null)
             return BadRequest();
+
+        if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+        
         var entity = _manager
             .ContactService
             .CreateOneContact(contactDto);
