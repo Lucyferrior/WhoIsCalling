@@ -1,4 +1,5 @@
 using Entities;
+using Entities.DataTransferObjects;
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contrats;
@@ -35,13 +36,13 @@ public class ContactController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateContact([FromBody] Contact contact)
+    public IActionResult CreateContact([FromBody] ContactDtoForInsertion contactDto)
     {
-        if (contact is null)
+        if (contactDto is null)
             return BadRequest();
         var entity = _manager
             .ContactService
-            .CreateOneContact(contact);
+            .CreateOneContact(contactDto);
         return StatusCode(201, entity);
     }
 }
