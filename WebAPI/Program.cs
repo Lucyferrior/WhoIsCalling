@@ -19,7 +19,7 @@ builder.Services.ConfigurePSQLContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerServices();
-
+builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerService>();
