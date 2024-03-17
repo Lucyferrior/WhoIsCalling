@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contrats;
 
@@ -29,7 +30,6 @@ public class ContactController : ControllerBase
         var entity = _manager
             .ContactService
             .GetContactById(id,false);
-        if (entity is null) return NotFound();
 
         return Ok(entity);
     }
