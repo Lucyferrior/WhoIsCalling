@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Exceptions;
 using Repositories.Contrats;
 using Services.Contrats;
 
@@ -25,7 +26,7 @@ public class ContactManager: IContactService
     {
         var entity = _manager.Contacts.GetOneContactById(id, trackChanges);
         if (entity is null)
-            throw new Exception($"Contact with id: {id} could not found.");
+            throw new ContactNotFoundException(id);
         return entity;
     }
     public Contact CreateOneContact(Contact contact)

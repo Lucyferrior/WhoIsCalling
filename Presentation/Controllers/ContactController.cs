@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contrats;
 
@@ -29,7 +30,6 @@ public class ContactController : ControllerBase
         var entity = _manager
             .ContactService
             .GetContactById(id,false);
-        if (entity is null) return NotFound();
 
         return Ok(entity);
     }
@@ -37,20 +37,11 @@ public class ContactController : ControllerBase
     [HttpPost]
     public IActionResult CreateContact([FromBody] Contact contact)
     {
-        try
-        {
-            if (contact is null)
-                return BadRequest();
-            var entity = _manager
-                .ContactService
-                .CreateOneContact(contact);
-            return StatusCode(201, entity);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        if (contact is null)
+            return BadRequest();
+        var entity = _manager
+            .ContactService
+            .CreateOneContact(contact);
+        return StatusCode(201, entity);
     }
-
 }
